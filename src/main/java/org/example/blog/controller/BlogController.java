@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+
 
 @Controller
 public class BlogController {
@@ -48,7 +48,7 @@ public class BlogController {
                           @RequestParam String content,
                           Model model) {
 
-        // Ручна валідація
+
         if (title == null || title.trim().isEmpty()) {
             model.addAttribute("titleError", "Заголовок не може бути порожнім");
             return "blog-add";
@@ -71,13 +71,13 @@ public class BlogController {
         return "redirect:/blog";
     }
 
-    // Оновити blogDetails щоб показувати коментарі
+
     @GetMapping("/blog/{id}")
     public String blogDetails(@PathVariable Long id, Model model) {
         Post post = postService.getPostById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Стаття з id " + id + " не знайдена"));
 
-        // Збільшуємо лічильник переглядів
+
         postService.incrementViews(id);
 
         model.addAttribute("post", post);
@@ -96,7 +96,7 @@ public class BlogController {
 
         return "blog-details";
     }
-    // Додати коментар
+
     @PostMapping("/blog/{id}/comment")
     public String addComment(@PathVariable Long id,
                              @RequestParam String content,
@@ -115,7 +115,7 @@ public class BlogController {
 
         return "redirect:/blog/" + id;
     }
-    // Видалити коментар
+
     @PostMapping("/blog/{postId}/comment/{commentId}/delete")
     public String deleteComment(@PathVariable Long postId,
                                 @PathVariable Long commentId) {
@@ -123,7 +123,7 @@ public class BlogController {
             User user = getCurrentUser();
             CustomUser currentUser = userService.findByLogin(user.getUsername());
 
-            // Видаляти може тільки автор коментаря або адмін
+
             boolean isAdmin = user.getAuthorities().stream()
                     .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
             boolean isAuthor = comment.getAuthor().getId().equals(currentUser.getId());

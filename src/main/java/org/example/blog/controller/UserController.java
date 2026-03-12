@@ -67,7 +67,7 @@ public class UserController {
                                @RequestParam(required = false) String address,
                                Model model) {
 
-        // Ручна валідація
+
         if (login == null || login.trim().length() < 3) {
             model.addAttribute("loginError", "Логін мінімум 3 символи");
             return "register";
